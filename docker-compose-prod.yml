@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:12
+    volumes:
+      - ./tmp/db:/var/lib/postgres/data
+    environment:
+      - POSTGRES_PASSWORD=password
+    
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 30->3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  # tailwindow-watch:
+  #   image: mercari-clone:latest
+  #   volumes:
+  #     - .:/myapp
+  #     - node_modules:/myapp/node_modules
+  #   command: ["rails", "tailwindowcss:watch"]
+  #   tty: true
+
+  # # js, cssのコンパイルをRailsプロセスに任せると遅いため別プロセス作成
+  # webpack-dev-server:
+  #   image: mercari-clone:latest
+  #   volumes:
+  #     - .:/myapp
+  #     - bundle:/usr/local/bundle
+  #     - node_modules:/myapp/node_modules
+  #   environment:
+  #     - NODE_ENV=development
+  #     - RAILS_ENV=development
+  #     - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+  #     - NODE_OPTIONS= 
