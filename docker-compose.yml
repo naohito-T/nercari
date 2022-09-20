@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  .app-base: &app-base
+    image: parrot_app
+    command: ['echo', 'build completed']
+    environment:
+      RAILS_ENV: development
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      REDIS_URL: redis://redis:6379
+    links:
+      - db
+      - redis
+    volumes:
+      - .:/rails_app
+      - bundle-data:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  app:
+    <<: *app-base
+    command: ['bundle', 'exec', 'rails', 'server', '-b', '0.0.0.0']
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+  worker:
+    <<: *app-base
+    command: ['bundle', 'exec', 'sidekiq', '-C', 'config/sidekiq.yml']
+
+  redis:
+    image: redis:6.2-alpine
+    #    M1系チップ搭載のMacで構築する場合は下記のコメントアウトを解除する
+    platform: linux/amd64
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+
+  db:
+    # image: mysql:5.7
+    # command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    # #    M1系チップ搭載のMacで構築する場合は下記のコメントアウトを解除する
+    # #    platform: linux/amd64
+    # ports:
+    #   - ${MYSQL_PORT-33306}:3306
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: password
+    # healthcheck:
+    #   test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+    #   timeout: 20s
+    #   retries: 10
+    # volumes:
+    #   - mysql-data:/var/lib/mysql
+    image: postgres:12
+    volumes:
+      - db-data:/var/lib/postgres/data
+    environment:
+      - POSTGRES_PASSWORD=password
+
+volumes:
+  bundle-data: {}
+  redis-data: {}
+  db-data: {}

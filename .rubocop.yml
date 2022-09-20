@@ -1,0 +1,69 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.1
+  TargetRailsVersion: 7.0
+  SuggestExtensions: false
+  NewCops: enable
+  Exclude:
+    - '**/tmp/**/*'
+    - 'bin/*'
+    - 'db/schema.rb'
+    - '**/templates/**/*'
+    - '**/vendor/**/*'
+    - 'actionpack/lib/action_dispatch/journey/parser.rb'
+    - 'actionmailbox/test/dummy/**/*'
+    - 'actiontext/test/dummy/**/*'
+    - '**/node_modules/**/*'
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Rails:
+  Enabled: true
+Rails/Output:
+  Exclude:
+    - db/seeds.rb
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 100
+Metrics/BlockLength:
+  Max: 60
+  Exclude:
+    - spec/**/*.rb
+Metrics/AbcSize:
+  Max: 50
+Metrics/CyclomaticComplexity:
+  Max: 15
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
+Style/SymbolArray:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Layout/LineLength:
+  Exclude:
+    - 'db/fixtures/*.rb'
+    - 'config/initializers/devise.rb'
+
+Lint/Void:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/UselessMethodDefinition:
+  Exclude:
+    - 'app/controllers/**/*.rb'

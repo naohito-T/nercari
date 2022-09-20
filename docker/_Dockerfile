@@ -1,0 +1,36 @@
+# builder
+# FROM ruby:3.1.2-slim as builder
+FROM ruby@sha256:7a82cbe60f2a9fe0ec6a5872d957f21b2faff23551df55b5c9511a7a5136a9b3 as builder
+
+ENV LANG C.UTF-8
+# ENV RAILS_ENV production
+ENV APP_HOME /rails_app
+
+WORKDIR ${APP_HOME}
+
+COPY docker/scripts/builder scripts/builder
+RUN chmod +x scripts/builder && . scripts/builder
+
+COPY . $APP_HOME
+
+FROM ruby@sha256:7a82cbe60f2a9fe0ec6a5872d957f21b2faff23551df55b5c9511a7a5136a9b3
+
+ENV LANG=C.UTF-8
+ENV APP_HOME /rails_app
+
+RUN apt-get update -qq && \
+    apt-get upgrade && \
+    apt-get install postgresql-dev 
+
+WORKDIR ${APP_HOME}
+
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY . ${APP_HOME}
+
+COPY docker/scripts/entrypoint /usr/bin/
+RUN chmod +x /usr/bin/entrypoint
+
+ENTRYPOINT ["entrypoint"]
+EXPOSE 3001
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
