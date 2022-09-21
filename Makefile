@@ -3,7 +3,10 @@
 .PHONE: \
 	up \
 	down \
-	build
+	build \
+	server \
+	watch \
+	console
 
 up:
 	docker-compose up
@@ -13,3 +16,14 @@ down:
 
 build:
 	docker-compose build --no-cache
+
+# apiだけとりあえず起動したいとき
+server:
+	rails s
+
+# tailwind watch
+watch:
+	rails tailwindcss:watch
+
+console:
+	rails c
