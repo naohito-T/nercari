@@ -46,8 +46,7 @@ Rails.application.configure do
   # devise
   # メールアドレス確認やパスワードリセットの際にメールが送信される。
   # メール内に記載されるURLはhttpやhttpsから始まるuRLである必要がある。
-  config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_URL', 'localhost'),
-                                               port: ENV.fetch('DEFAULT_PORT', 3000) }
+  config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_URL', 'localhost'), port: ENV.fetch('DEFAULT_PORT', 3000) }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

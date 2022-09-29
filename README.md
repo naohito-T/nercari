@@ -23,13 +23,25 @@
 <details>
 <summary>Show Start instructions</summary>
 
-Bundle install
-`$ bundle install`
-
-Env decrypt.
+- Env decrypt.  
 `$ bundle exec thor credentials:decrypt`
 
-Start.
-`$ rails s`
+- Build docker image  
+`$ docker-compose build`
+  - Short syntax  
+  `$ make build`
 
+- Install bundle in docker image  
+`$ docker-compose run --rm app bundle install`  
+  - Short syntax  
+  `$ make bundle`
+
+- Create DB.  
+`$ docker-compose run --rm app bundle exec rails db:create`
+
+- Start Docker or Host
+  - Docker  
+  `$ docker-compose up`
+  - Host pc.  
+  `$ rails s`
 </details>
