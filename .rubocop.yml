@@ -41,8 +41,6 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Enabled: false
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/HashSyntax:
@@ -54,6 +52,8 @@ Style/ClassAndModuleChildren:
 
 Naming/VariableNumber:
   EnforcedStyle: snake_case
+  AllowedIdentifiers:
+    - 'v1'
 
 Layout/LineLength:
   Exclude:

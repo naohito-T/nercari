@@ -1,0 +1,6 @@
+# All Environments
+redis:
+  url: <%= ENV['REDIS_URL'] %>
+  db: <%= ENV['REDIS_DB'] %>
+
+

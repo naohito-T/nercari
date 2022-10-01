@@ -1,5 +1,9 @@
+Dockerfile
+.dockerignore
+.git
 .vscode
 tmp/*
 log/*
-.git
-# docker
+.bundle
+vendor/bundle
+node_modules

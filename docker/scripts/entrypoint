@@ -1,8 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-
-# Remove a potentially pre-existing server.pid for Rails.
-# TODO myappをDockerfileのWORKDIRを削除
-rm -f /myapp/tmp/pids/server.pid
-
-exec "$@"
