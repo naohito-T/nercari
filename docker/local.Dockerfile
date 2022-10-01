@@ -28,7 +28,7 @@ COPY --from=nodejs /usr/bin/yarn /usr/bin/yarn
 
 RUN apt-get update -qqy \
     && apt-get upgrade -qqy \
-    && apt-get install -qqy --no-install-recommends make gcc git build-essential libpq-dev g++ xz-utils tzdata \
+    && apt-get install -qqy --no-install-recommends make gcc git build-essential libpq-dev apt postgresql-client g++ xz-utils tzdata \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

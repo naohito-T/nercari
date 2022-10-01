@@ -1,21 +1,30 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e pipefail
 
-# loading flag
-alias loaded="loaded"
+USER=1000
 
+function load_alias() {
+  
+  # loading flag
+  alias loaded="loaded"
+  # docker commands
+  alias up="docker-compose up"
+  alias build="docker-compose build"
+  alias down="docker-compose down"
+  alias run="docker-compose run --rm -u $USER:$USER"
+  alias app="docker-compose up app"
+  alias worker="docker-compose up worker"
 
-alias up="docker-compose up -u $(id -u $USER)"
-alias build="docker-compose build"
-alias down="docker-compose down"
-alias run="docker-compose run --rm -u $(id -u $USER):$(id -g $USER)"
-alias up-app="docker-compose run -it -u $(id -u $USER):$(id -g $USER) ubuntu bash"
-alias bundle="docker-compose run --rm app bundle"
-alias rails="docker-compose run --rm app bundle exec rails"
-alias rspec="docker-compose run -e RAILS_ENV=test --rm app bundle exec rspec"
-alias app="docker-compose up app"
-alias worker="docker-compose up worker"
-alias rubocop="docker-compose run --rm app bundle exec rubocop"
-alias swagger="docker-compose up openapi-ui openapi-editor openapi-mock"
+  # rails commands
+  alias bundle="docker-compose run --rm -u $(id -u $USER):$(id -g $USER) app bundle"
+  alias install="docker-compose run --rm -u $(id -u $USER):$(id -g $USER) app bundle install"
+  alias rails="docker-compose run --rm app rails"
+  alias rspec="docker-compose run -e RAILS_ENV=test --rm app rspec"
+  alias rubocop="docker-compose run --rm app rubocop"
+  alias swagger="docker-compose up openapi-ui openapi-editor openapi-mock"
 
+  # DB
+  alias rails="docker-compose run --rm app rails db"
+}
 
+load_alias
