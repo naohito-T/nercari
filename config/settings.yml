@@ -2,8 +2,5 @@
 redis:
   url: <%= ENV['REDIS_URL'] %>
   db: <%= ENV['REDIS_DB'] %>
-# Api
-api:
-  url: <%= ENV['DEFAULT_URL'] %>
-  port: <%= ENV['DEFAULT_PORT'] %>
+
 

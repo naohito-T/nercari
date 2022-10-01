@@ -20,8 +20,18 @@ module Nercari
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # Skip generators
+    config.generators do |g|
+      g.assets false
+      g.skip_routes true
+      g.helper false
+      g.test_framework :test_unit, fixture: false
+    end
 
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = false
+
+    # 
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag}
   end
 end

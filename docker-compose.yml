@@ -16,9 +16,12 @@ services:
     volumes:
       # カレントディレクトリをバインドする
       - .:/app:cached
-      # bundle-data volumeマウントしている。
+      # bundle-data volumeを作成しdockerのroot bundle dirへマウントしている。
       - bundle-data:/usr/local/bundle
       - node-data:/app/node_modules
+      # /etc/group & passwdをdockerから書き換えないためにreadonly
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
     depends_on:
       db:
         condition: service_healthy
@@ -27,6 +30,7 @@ services:
 
   app:
     <<: *app-base
+    user: "${UID}:${GID}"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - 3000:3000
@@ -52,8 +56,11 @@ services:
     volumes:
       - redis-data:/data
 
+  # TODO portとdbevarから繋げるようにする。
   db:
     image: postgres:12
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -69,7 +76,7 @@ services:
 
 
 volumes:
-  # 以下の記入について調べる。
+  # TODO 以下の記入について調べる（おそらく作成するだけでいい場合の最低構文）
   bundle-data: {}
   node-data: {}
   redis-data: {}
