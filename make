@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
+# set -ex pipefail
 # ---------------------------------------------------
 # Makefileを書くのは辛いためシェルスクリプトのタスクランナー
 # ---------------------------------------------------
 
-function catch() {
+# function catch() {
 
-}
+# }
 
 function load() {
+  source ./bin/usage
   source ./bin/alias
 }
 
-function make() {
+# function make() {
 
-}
+# }
 
 
 # up:
@@ -75,13 +75,32 @@ function make() {
 # credentials.edit:
 #   bin/rails credentials:edit
 
+function main() {
+    local args="${1:-nothing}"
+    case "$args" in
+        # "all" )
+        #     core.all "${@:2:($#)}"
+        # exit 0 ;;
+        # "clear" )
+        #     core.clear "${@:2:($#)}"
+        # exit 0 ;;
+        # "peek" | "top" )
+        #     core.peek  "${@:2:($#)}"
+        # exit 0 ;;
+        # "pop" )
+        #   core.pop  "${@:2:($#)}"
+        # exit 0 ;;
+        "help" )
+          usage
+        exit 0 ;;
+        "nothing" )
+          usage
+        exit 0 ;;
+    esac
+}
+
 
 # file load
-alias loaded
-if (( ! $? )); then
-  echo "読み込み"
-  load
-fi
-echo "読み込まない"
+load
 # main
 make "$@"

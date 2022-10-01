@@ -13,12 +13,16 @@ class User < ApplicationRecord
   # 一行ずつも可能
   # validates :nickname, presence: true
   # validates :gender, presence :true
-
+  # with_optionsだとまとめられる、
   with_options presence: true do
     validates :nickname
     validates :gender
+    before_validation :skip_confirmation!, if: :new_record?
   end
   
+  # ユーザひとリあたり本人情報は1つだけ必要。has_oneアソシエーションをUserモデルに定義する。
+  # また User モデルのインスタンスが削除された場合は UserInformation も不要になるため dependent: :destroy オプションも付与します。
+  has_one :user_information, dependent: :destroy
   
   # enumはhashで定義しkeyで使用しvalueをinsertする
   # enumを追加すると自動でメソッドが追加される。
